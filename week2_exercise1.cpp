@@ -26,9 +26,15 @@ char numberToLetter(char i){
     return i + 'a';
 }
 
+
 int main(void)
 {
-    //CODE GOES HERE 
-
-    putc('\n');
+    int number = 0;
+    for (int i = 0; inputString[i] != '\0'; ++i) {
+        number = letterToNumber(inputString[i]) + 1;
+        if (number > 25) {
+            number = 0;
+        }
+        putc(numberToLetter(number));
+    }
 }
