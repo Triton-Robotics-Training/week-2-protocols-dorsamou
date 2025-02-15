@@ -36,5 +36,6 @@ int main(void)
             number = 0;
         }
         putc(numberToLetter(number));
+        putc('\n');
     }
 }
