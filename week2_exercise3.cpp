@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdint.h>
 
+//print a packet passed in, with a length
 void printPacket(uint8_t* packet, short length){
     printf("[");
     for(int i = 0; i < length; i ++){
@@ -17,6 +18,7 @@ private:
 public: 
     CAN(){}
     
+    //send a message with an id, pass in the packet's array, and the length of the packet
     void sendPacket(short id, uint8_t* packet, short length){
         printf("You sent this packet: [id: 0x%04X]",id);
         printPacket(packet, length);
@@ -39,6 +41,7 @@ public:
         }
     }
     
+    //pass a short and it will be filled with the id, pass in the packet's array and it will be filled witht the packet, pass a short and it will be filled with the length
     void readPacket(short* id, uint8_t* packet, short* length){
         *length = 8;
         *id = this->id;
@@ -52,7 +55,7 @@ public:
 //TOUCH NOTHING ABOVE THIS
 
 int main() {
-    srand(2); //MODIFY THIS TO CHANGE THE READ PACKET TEST CASE
+    srand(0); //MODIFY THIS TO CHANGE THE READ PACKET TEST CASE
     CAN canbus; //usually this has parameters, but since this isn't real and we're running this on a standard compiler, it doesn't
     
     int16_t angle = 0;
@@ -80,7 +83,9 @@ int main() {
     
     //We pass in an array (data_recv) and it is filled in the can read function, as well as the id we recieve from and the length of the packet.
     canbus.readPacket(&id_recv, data_recv, &len_recv);
-    
+
+    printf("rectrieved angle: %d | velocity: %d | torque: %d | temperature: %d\n", data_recv[0] << 8 | data_recv[1], (int16_t)(data_recv[2] << 8 | data_recv[3]), (int16_t)(data_recv[4] << 8 | data_recv[5]), data_recv[6]);
+
     //TODO: DECODE THE DATA RECIEVED BY THE MOTOR, YOU SHOULD GET DIFFERENT DATA DEPENDING ON SRAND
     // srand(0): 1383, -5114, 27, 85
     // srand(2): 6138, 6719, 38, 65
